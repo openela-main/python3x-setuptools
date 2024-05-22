@@ -14,7 +14,7 @@
 Name:           python3x-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        50.3.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # appdirs is MIT
@@ -26,6 +26,12 @@ Summary:        Easily build and distribute Python packages
 License:        MIT and (BSD or ASL 2.0)
 URL:            https://pypi.python.org/pypi/%{srcname}
 Source0:        %{pypi_source %{srcname} %{version} zip}
+
+# Security fix for CVE-2022-40897
+# Regular Expression Denial of Service (ReDoS) in package_index.py
+# Resolved upstream: https://github.com/pypa/setuptools/commit/43a9c9bfa6aa626ec2a22540bea28d2ca77964be
+# The patch is backported without test because that requires pytest.timeout.
+Patch1:         CVE-2022-40897.patch
 
 BuildArch:      noarch
 # Exclude i686 arch. Due to a modularity issue it's being added to the
@@ -207,6 +213,10 @@ fi
 
 
 %changelog
+* Tue Oct 03 2023 Lumír Balhar <lbalhar@redhat.com> - 50.3.2-5
+- Fix for CVE-2022-40897
+Resolves: RHEL-9764
+
 * Thu Aug 05 2021 Tomas Orsava <torsava@redhat.com> - 50.3.2-4
 - Adjusted the postun scriptlets to enable upgrading to RHEL 9
 - Resolves: rhbz#1933055
