@@ -14,7 +14,7 @@
 Name:           python3x-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        50.3.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # appdirs is MIT
@@ -39,6 +39,11 @@ Patch1:         CVE-2022-40897.patch
 # Upstream solution: https://github.com/pypa/setuptools/pull/4332
 # Patch simplified because upstream doesn't support SVN anymore.
 Patch2:         CVE-2024-6345.patch
+
+# Security fix for CVE-2025-47273
+# Path traversal in PackageIndex.download leads to Arbitrary File Write
+# Upstream solution: https://github.com/pypa/setuptools/pull/4951/
+Patch3:         CVE-2025-47273.patch
 
 BuildArch:      noarch
 # Exclude i686 arch. Due to a modularity issue it's being added to the
@@ -220,6 +225,10 @@ fi
 
 
 %changelog
+* Mon Aug 04 2025 Tomáš Hrnčiar <thrnciar@redhat.com> - 50.3.2-7
+- Security fix for CVE-2025-47273
+Resolves: RHEL-104339
+
 * Thu Jul 25 2024 Charalampos Stratakis <cstratak@redhat.com> - 50.3.2-6
 - Security fix for CVE-2024-6345
 Resolves: RHEL-50493
